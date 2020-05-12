@@ -20,9 +20,9 @@ var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,newDeaths,
         const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(new Date(date)); 
 
         bot.telegram.sendMessage(id,`
-        Коронавірус в Україні станом на ${da}.${mo}.${ye}\n\nВсього захворіло: ${Confirmed}(${newConfirmed} нових)\
+        Коронавірус в Україні станом на ${mo}.${da}.${ye}\n\nВсього захворіло: ${Confirmed}(${newConfirmed} нових)\
         \nВсього хворих: ${active}(${critical} в критичному стані)\nПомерло: ${Deaths}(${newDeaths} нових)\
-        \nВиліковано: ${Recovered}\nВсього протестовано: ${tests}\n\nКарантин до ${d}.${m}.${y}(${leftDays} днів осталось)
+        \nВиліковано: ${Recovered}\nВсього протестовано: ${tests}\n\nКарантин до ${m}.${d}.${y}(${leftDays} днів осталось)
         `)
     })
 }
