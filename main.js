@@ -14,14 +14,14 @@ var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,newDeaths,
     users = JSON.parse(users)[0];
     const NowDATE = new Date();
     const leftDays = parseInt((botInfo.quarantineEndDate-NowDATE) / 60000 / 60 / 24)
-    const [{ value: d },,{ value: m },,{ value: y }] = dtf.formatToParts(botInfo.quarantineEndDate); 
+    const [{ value: m },,{ value: d },,{ value: y }] = dtf.formatToParts(botInfo.quarantineEndDate); 
     users.forEach(async (id,index)=>{
         if (index % 10 === 0) await sleep(1000)
-        const [{ value: da },,{ value: mo },,{ value: ye }] = dtf.formatToParts(new Date(date)); 
+        const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(new Date(date)); 
 
         bot.telegram.sendMessage(id,`
-        Коронавірус в Україні станом на ${da}.${mo}.${ye}\n\nВсього захворіло: ${Confirmed}(${newConfirmed} за добу)\
-        \nВсього хворих: ${active}(${critical} в критичному стані)\nПомерло: ${Deaths}(${newDeaths} за добу)\
+        Коронавірус в Україні станом на ${da}.${mo}.${ye}\n\nВсього захворіло: ${Confirmed}(${newConfirmed} нових)\
+        \nВсього хворих: ${active}(${critical} в критичному стані)\nПомерло: ${Deaths}(${newDeaths} нових)\
         \nВиліковано: ${Recovered}\nВсього протестовано: ${tests}\n\nКарантин до ${d}.${m}.${y}(${leftDays} днів осталось)
         `)
     })
