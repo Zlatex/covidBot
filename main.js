@@ -8,7 +8,7 @@ const token = botInfo.token
 const bot = new Telegraf(token);
 //https://api.covid19api.com/summary
 const dtf = new Intl.DateTimeFormat('ua', { year: '2-digit', month: '2-digit', day: '2-digit' }) 
-var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,Recovered){
+var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,newDeaths,Recovered,active,critical,tests){
     if (date === null) return;
     var users = fs.readFileSync('./chats.json');
     users = JSON.parse(users)[0];
@@ -20,8 +20,9 @@ var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,Recovered)
         const [{ value: da },,{ value: mo },,{ value: ye }] = dtf.formatToParts(new Date(date)); 
 
         bot.telegram.sendMessage(id,`
-        Коронавірус в Україні станом на ${da}.${mo}.${ye}\n\nВсього: ${Confirmed}\nНових: ${newConfirmed}\nПомерло: ${Deaths}\
-        \nВиліковано: ${Recovered}\n\nКарантин до ${d}.${m}.${y}(${leftDays} днів осталось)
+        Коронавірус в Україні станом на ${da}.${mo}.${ye}\n\nВсього захворіло: ${Confirmed}(${newConfirmed} за добу)\
+        \nВсього хворих: ${active}(${critical} в критичному стані)\nПомерло: ${Deaths}(${newDeaths} за добу)\
+        \nВиліковано: ${Recovered}\nВсього протестовано: ${tests}\n\nКарантин до ${d}.${m}.${y}(${leftDays} днів осталось)
         `)
     })
 }
