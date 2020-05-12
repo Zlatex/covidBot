@@ -1,14 +1,16 @@
 import * as botInfo from './botInfo.js' //Статичная информация для дальнейшего использования ботом
 import Telegraf  from 'telegraf';
 import * as covid from './covid.js'
+import * as command from './commands.js'//Файл с функциями для команд
 import fs from 'fs';
 
 const bot = new Telegraf(botInfo.token); 
 
+
 const dtf = new Intl.DateTimeFormat('ua', { year: '2-digit', month: '2-digit', day: '2-digit' }) //на StackOverwlow нашел, переводит Date в месяци, дни, годы
 
 var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,newDeaths,Recovered,active,critical,tests){//Функция, которая отправляет людям из списка сообщение об ситуации с коронавирусом
-    if (date === null) return; // если ничего не приходит (всё переменные равны undefined)
+    if (date === null) return; // если ничего не приходит (всё переменные равны undefined), то выходит
     var users = fs.readFileSync('./chats.json');//Список пользователей, которым нужно отправить рассылку
     users = JSON.parse(users)[0];
     const NowDATE = new Date();// Текущее время
@@ -29,8 +31,10 @@ covid.Start(postFun,botInfo.Country);
 
 setInterval(()=>covid.checkAndPost(postFun),60000)//Проверяет каждую минуту не появились ли новые данные
 
-
 var sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms));}
 
+//Команды
+bot.command('sub',command.sub);
+bot.command('unsub',command.unsub);
 
 bot.launch()

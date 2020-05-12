@@ -14,6 +14,7 @@ export async function checkAndPost (callback){
     var status = fs.readFileSync('./status.json');// Информация об последней рассылке
     status = JSON.parse(status);
     if (status.updated === CovidInfo.updated) return; // Если данные совпадают, то выходим
+    
     callback(CovidInfo.updated,CovidInfo.cases,CovidInfo.todayCases, //
         CovidInfo.deaths,CovidInfo.todayDeaths,CovidInfo.recovered, // возвращает в main.js информацию об коронавирусе, чтобы отправить её пользователям
         CovidInfo.active,CovidInfo.critical,CovidInfo.tests);      // 

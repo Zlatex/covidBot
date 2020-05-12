@@ -1,3 +1,3 @@
- export var token = `909663683:AAGKKAhyDZu-SXbSAVB97_bDoviVK7JDBgI`;//909663683:AAGKKAhyDZu-SXbSAVB97_bDoviVK7JDBgI 1048444586:AAHJnIO5DAzGsJma7MIm9uIb4-F8UYLeUog // Токен бота
+ export var token = `1048444586:AAHJnIO5DAzGsJma7MIm9uIb4-F8UYLeUog`;//909663683:AAGKKAhyDZu-SXbSAVB97_bDoviVK7JDBgI 1048444586:AAHJnIO5DAzGsJma7MIm9uIb4-F8UYLeUog // Токен бота
  export var Country = "ukraine"; // Страна, информация о которой будет выводиться
  export var quarantineEndDate = new Date("2020-05-22T00:00:00.000Z"); //Время окончания карантина(В будущем будет не статично и будет изменяться командой)
