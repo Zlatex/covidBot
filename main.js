@@ -43,5 +43,6 @@ bot.command('sub',command.sub);
 bot.command('unsub',command.unsub);
 bot.command('q',command.q);
 bot.hears(/^\/quarantine (.*)$/,command.quarantine); 
+bot.hears(/^\/covid (.*)$/,covid.infoCounty); 
 
 bot.launch()
