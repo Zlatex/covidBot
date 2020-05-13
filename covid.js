@@ -21,3 +21,24 @@ export async function checkAndPost (callback){
 
     fs.writeFileSync('./status.json', JSON.stringify(CovidInfo));//Сохранение актуальной информации
 }
+
+export async function infoCounty (ctx){
+    if (ctx.match.length < 2) return ctx.reply('Не верный формат (/covid county)'); //Если не передано никаних значений - выходим
+    var CovidInfo;
+    const country = ctx.match[1];
+    try{
+        await fetch(`https://corona.lmao.ninja/v2/countries/${country}?yesterday=false&strict&query%20`)
+        .then(res => res.text())
+        .then(body => CovidInfo = JSON.parse(body)); // Присваивает переменной CovidInfo актуальные данны об коронавирусе
+        if (CovidInfo.message) return ctx.reply('Старана не найдена'); //Если страна не найдена - выходим
+        console.log(CovidInfo);
+        ctx.reply(`
+            Коронавірус в ${country}\n\nВсього захворіло: ${CovidInfo.cases}(${CovidInfo.todayCases} нових)\
+            \nВсього хворих: ${CovidInfo.active}(${CovidInfo.critical} в критичному стані)\nПомерло: ${CovidInfo.deaths}(${CovidInfo.todayDeaths} нових)\
+            \nВиліковано: ${CovidInfo.recovered}\nВсього протестовано: ${CovidInfo.tests}
+            `)//Отправка сообщения
+    }catch(err){ctx.reply('Ошибка')}
+    
+
+
+}
