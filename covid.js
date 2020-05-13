@@ -31,9 +31,8 @@ export async function infoCounty (ctx){
         .then(res => res.text())
         .then(body => CovidInfo = JSON.parse(body)); // Присваивает переменной CovidInfo актуальные данны об коронавирусе
         if (CovidInfo.message) return ctx.reply('Старана не найдена'); //Если страна не найдена - выходим
-        console.log(CovidInfo);
         ctx.reply(`
-            Коронавірус в ${country}\n\nВсього захворіло: ${CovidInfo.cases}(${CovidInfo.todayCases} нових)\
+            Коронавірус в ${CovidInfo.country}\n\nВсього захворіло: ${CovidInfo.cases}(${CovidInfo.todayCases} нових)\
             \nВсього хворих: ${CovidInfo.active}(${CovidInfo.critical} в критичному стані)\nПомерло: ${CovidInfo.deaths}(${CovidInfo.todayDeaths} нових)\
             \nВиліковано: ${CovidInfo.recovered}\nВсього протестовано: ${CovidInfo.tests}
             `)//Отправка сообщения
