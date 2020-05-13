@@ -13,28 +13,35 @@ var postFun = async function (date=null,Confirmed,newConfirmed,Deaths,newDeaths,
     if (date === null) return; // если ничего не приходит (всё переменные равны undefined), то выходит
     var users = fs.readFileSync('./chats.json');//Список пользователей, которым нужно отправить рассылку
     users = JSON.parse(users)[0];
+
+    const StaticInfo = fs.readFileSync('./botinfo.json');
+    const quarantineEndDate = new Date(JSON.parse(StaticInfo).quarantine);
+
     const NowDATE = new Date();// Текущее время
-    const leftDays = parseInt((botInfo.quarantineEndDate-NowDATE) / 60000 / 60 / 24)// Осталось дней до конца карантина
-    const [{ value: m },,{ value: d },,{ value: y }] = dtf.formatToParts(botInfo.quarantineEndDate); //на StackOverwlow нашел, переводит Date в месяци, дни, годы
+    const leftDays = parseInt((quarantineEndDate-NowDATE) / 60000 / 60 / 24)// Осталось дней до конца карантина
+    const [{ value: m },,{ value: d },,{ value: y }] = dtf.formatToParts(quarantineEndDate); //на StackOverwlow нашел, переводит Date в месяци, дни, годы
+
     users.forEach(async (id,index)=>{ //Думаю тут всё понятно, масив, который перебирает пользователей, которым нужно отправить рассылку
         if (index % 10 === 0) await sleep(1000)//Каждый 10 пользователей делать паузу так как в телеграме лимиты 30 в секунду(10 чтобы сильно не нагружать бота)
         const [{ value: mo },,{ value: da },,{ value: ye }] = dtf.formatToParts(new Date(date)); 
-
         bot.telegram.sendMessage(id,`
         Коронавірус в Україні станом на ${mo}.${da}.${ye}\n\nВсього захворіло: ${Confirmed}(${newConfirmed} нових)\
         \nВсього хворих: ${active}(${critical} в критичному стані)\nПомерло: ${Deaths}(${newDeaths} нових)\
         \nВиліковано: ${Recovered}\nВсього протестовано: ${tests}\n\nКарантин до ${m}.${d}.${y}(${leftDays} днів осталось)
         `)//Отправка сообщения
+        
     })
 }
 covid.Start(postFun,botInfo.Country);
 
-setInterval(()=>covid.checkAndPost(postFun),60000)//Проверяет каждую минуту не появились ли новые данные
+setInterval(()=>covid.Start(postFun,botInfo.Country),60000)//Проверяет каждую минуту не появились ли новые данные
 
 var sleep = (ms) => {return new Promise(resolve => setTimeout(resolve, ms));}
 
 //Команды
 bot.command('sub',command.sub);
 bot.command('unsub',command.unsub);
+bot.command('q',command.q);
+bot.hears(/^\/quarantine (.*)$/,command.quarantine); 
 
 bot.launch()
